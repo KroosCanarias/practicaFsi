@@ -12,7 +12,6 @@ import sys
 
 # ______________________________________________________________________________
 
-
 class Problem:
     """The abstract class for a formal problem.  You should subclass this and
     implement the method successor, and possibly __init__, goal_test, and
@@ -75,6 +74,7 @@ class Node:
     def __repr__(self):
         return "<Node %s>" % (self.state,)
 
+
     def path(self):
         """Create a list of nodes from the root to this node."""
         x, result = self, [self]
@@ -98,11 +98,13 @@ def graph_search(problem, fringe):
     The argument fringe should be an empty queue.
     If two paths reach a state, only use the best one. [Fig. 3.18]"""
     closed = {}
+    count=0
     fringe.append(Node(problem.initial))
     while fringe:
         node = fringe.pop()
+        count+=1
         if problem.goal_test(node.state):
-            return node
+            return count,node
         if node.state not in closed:
             closed[node.state] = True
             fringe.extend(node.expand(problem))
@@ -121,6 +123,10 @@ def depth_first_graph_search(problem):
 def ramificacion_acotacion_search(problem):
     """Search the deepest nodes in the search tree first. [p 74]"""
     return graph_search(problem, RamificacionAcotacion())
+
+def ramificacion_acotacion_heuristica_search(problem):
+    """Search the deepest nodes in the search tree first. [p 74]"""
+    return graph_search(problem, RamificacionAcotacionHeuristica(problem))
 
 
 # _____________________________________________________________________________

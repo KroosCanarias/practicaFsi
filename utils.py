@@ -1,6 +1,7 @@
 
 #______________________________________________________________________________
 # Simple Data Structures: infinity, Dict, Struct
+import math
 
 infinity = 1.0e400
 
@@ -558,15 +559,31 @@ class RamificacionAcotacion(Queue):
 
     def extend(self, items):
         self.A.extend(items)
-        self.A.sort(key=lambda elem: elem.path_cost)
+        self.A.sort(key=lambda elem: elem.path_cost, reverse=True)
 
     def pop(self):
-        e = self.A[self.start]
-        self.start += 1
-        if self.start > 5 and self.start > len(self.A) / 2:
-            self.A = self.A[self.start:]
-            self.start = 0
-        return e
+        return self.A.pop()
+
+
+class RamificacionAcotacionHeuristica:
+
+    def __init__(self,problem):
+        self.A = []
+        self.problem=problem
+        self.start = 0
+
+    def append(self, item):
+        self.A.append(item)
+
+    def __len__(self):
+        return len(self.A) - self.start
+
+    def extend(self, items):
+        self.A.extend(items)
+        self.A.sort(key=lambda elem: (elem.path_cost+self.problem.h(elem)), reverse=True)
+
+    def pop(self):
+        return self.A.pop()
 
 ## Fig: The idea is we can define things like Fig[3,10] later.
 ## Alas, it is Fig[3,10] not Fig[3.10], because that would be the same as Fig[3.1]
