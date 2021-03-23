@@ -565,12 +565,12 @@ class RamificacionAcotacion(Queue):
         return self.A.pop()
 
 
-class RamificacionAcotacionHeuristica:
+class RamifAcotSubestimacion(Queue):
 
-    def __init__(self,problem):
+    def __init__(self, problem):
         self.A = []
-        self.problem=problem
         self.start = 0
+        self.problem = problem
 
     def append(self, item):
         self.A.append(item)
@@ -580,7 +580,7 @@ class RamificacionAcotacionHeuristica:
 
     def extend(self, items):
         self.A.extend(items)
-        self.A.sort(key=lambda elem: (elem.path_cost+self.problem.h(elem)), reverse=True)
+        self.A.sort(key=lambda elem: elem.path_cost + self.problem.h(elem), reverse=True)
 
     def pop(self):
         return self.A.pop()
